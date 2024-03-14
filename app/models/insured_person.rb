@@ -1,0 +1,2 @@
+class InsuredPerson < ApplicationRecord
+end
