@@ -7,3 +7,9 @@ bash:
 server: # make server port=3000
 	@docker-compose run --rm -p ${port}:${port} app \
 		sh -c "bundle exec rails server -p ${port} -b 0.0.0.0"
+
+down:
+	@docker compose down
+
+up:
+	@docker compose up app
