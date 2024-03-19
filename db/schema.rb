@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_14_140258) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_19_170534) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -19,6 +19,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_14_140258) do
     t.string "document"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["document"], name: "index_insured_people_on_document", unique: true
   end
 
   create_table "policies", force: :cascade do |t|
@@ -39,6 +40,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_14_140258) do
     t.string "license_plate"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["license_plate"], name: "index_vehicles_on_license_plate", unique: true
   end
 
   add_foreign_key "policies", "insured_people"
