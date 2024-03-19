@@ -14,6 +14,8 @@ class PoliciesController < ApplicationController
       }
   end
 
+  private
+
   def record_not_found
     render body: nil, status: :not_found
   end
