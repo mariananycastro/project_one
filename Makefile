@@ -2,14 +2,14 @@ build:
 	@docker-compose build
 
 bash:
-	@docker-compose run --rm --service-ports app bash
+	docker compose up -d
+	docker exec -it app bash
 
-server: # make server port=3000
-	@docker-compose run --rm -p ${port}:${port} app \
-		sh -c "bundle exec rails server -p ${port} -b 0.0.0.0"
+rabbit:
+	@docker run --rm -p 15672:15672 -p 5672:5672 --hostname rabbitmq --name rabbitmq --network project-one_default rabbitmq:3-management
 
 down:
 	@docker compose down
 
-up:
-	@docker compose up app
+stop: # make stop container_name=rabbitmq
+	docker stop ${container_name}

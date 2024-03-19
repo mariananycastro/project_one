@@ -11,7 +11,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-  app:
+  app: &app
     container_name: app
     tty: true
     stdin_open: true
@@ -25,7 +25,12 @@ services:
       - rubygems:/usr/local/bundle
     depends_on:
       - postgres
-      
+  sneakers:
+    <<: *app  
+    container_name: sneakers
+    command: ['rake', 'sneakers:run']
+    ports:
+      - "3001:3000"
 volumes:
   rubygems:
   project-one-data:
