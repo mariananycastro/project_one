@@ -1,13 +1,19 @@
 # README
-This project was created to help me study:
+This is the first in a series of projects created by Rebase to help me study many tools, gems, etc.
+
+This project will help me study:
 - Docker
 - PostgreSQL
 - RabbitMQ
 
-## Ruby version 3.3.0
-
 ## Main Object
-TODO
+In this project we will create a routes to get the policy which will be used by project_two with Graphql 
+add route
+
+There will be a (worker)[path] which will create a new policy.
+add payload and queue
+
+## Ruby version 3.3.0
 
 ## Docker
 This project uses Docker which has 3 containers: postgres, app and sneakers.
