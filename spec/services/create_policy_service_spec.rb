@@ -39,9 +39,7 @@ RSpec.describe CreatePolicyService do
           new_insured_person_attr[:name] = nil
         end
 
-        it 'return ActiveModel error' do
-          expect(subject).to eq nil
-        end
+        it { is_expected.to eq nil }
       end
 
       context 'vehicle' do
@@ -49,9 +47,7 @@ RSpec.describe CreatePolicyService do
           new_vehicle_attr[:brand] = nil
         end
 
-        it 'return ActiveModel error' do
-          expect(subject).to eq nil
-        end
+        it { is_expected.to eq nil }
       end
 
       context 'policy' do
@@ -59,7 +55,7 @@ RSpec.describe CreatePolicyService do
           new_policy_attr[:effective_from] = nil
         end
 
-        it 'return ActiveModel error' do
+        it 'returns nil' do
           expect(subject).to eq nil
         end
       end

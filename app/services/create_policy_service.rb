@@ -14,9 +14,9 @@ class CreatePolicyService
   end
 
   def execute
-    ActiveRecord::Base.transaction do
-      raise ActiveRecord::Rollback if policy_attr.keys.length != 2
+    return nil if policy_attr.keys.length != 2
 
+    ActiveRecord::Base.transaction do
       insured_person = InsuredPerson.find_or_create_by(insured_person_attr)
       vehicle = Vehicle.find_or_create_by(vehicle_attr)
 
@@ -29,9 +29,8 @@ class CreatePolicyService
         )
       )
       
-      raise ActiveRecord::Rollback if policy.invalid?
+      raise ActiveRecord::Rollback unless policy.save
 
-      policy.save
       policy
     end
   end
