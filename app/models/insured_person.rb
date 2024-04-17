@@ -1,6 +1,6 @@
 class InsuredPerson < ApplicationRecord
   has_many :policies
   
-  validates :name, :document, presence: true  
-  validates :document, uniqueness: true
+  validates :name, :document, :email, presence: true  
+  validates :document, :email, uniqueness: true
 end
