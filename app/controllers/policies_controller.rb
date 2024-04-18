@@ -4,6 +4,12 @@ class PoliciesController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   def index
+    policies = Policy.all
+
+    render json: policies
+  end
+
+  def insured_person_by_email
     policies = Policy.joins(:insured_person).where(insured_people: { email: params[:email] })
 
     render json: policies

@@ -47,7 +47,53 @@ RSpec.describe 'Policy', type: :request do
   end
 
   context '#index' do
-    subject(:request) { get policies_path(email: email) }
+    subject(:request) { get policies_path }
+
+    let(:policy) do
+      Policy.create!(
+        effective_from: Date.today,
+        effective_until: 1.year.from_now,
+        insured_person_attributes: {
+          name: 'Maria Silva',
+          email: 'maria@email.com',
+          document: '123.456.789-00'
+        },
+        vehicle_attributes: {
+          brand: "New brand",
+          vehicle_model: "Gol 1.6",
+          year: "2022",
+          license_plate: 'ABC-1234'
+        }
+      )
+    end
+  
+    context 'there are policies created' do
+      it 'list policies' do
+        policy
+        request
+
+        response_body = JSON.parse(response.body)
+
+        expect(response).to have_http_status(200)
+        expect(response_body.first['id']).to eq policy.id
+      end
+    end
+
+    context 'there are policies created' do
+      it 'list policies' do
+        request
+
+        response_body = JSON.parse(response.body)
+
+        expect(response).to have_http_status(200)
+        expect(response_body).to eq []
+      end
+    end
+  end
+
+  context '#insured_person_policies_by_email' do
+    subject(:request) { get "/insured_person/#{email}" }
+
     let(:policy) do
       Policy.create!(
         effective_from: Date.today,
@@ -74,7 +120,7 @@ RSpec.describe 'Policy', type: :request do
       it 'return policies from given email' do
         request
         response_body = JSON.parse(response.body)
-
+        
         expect(response).to have_http_status(200)
         expect(response_body.first['id']).to eq policy.id
       end
