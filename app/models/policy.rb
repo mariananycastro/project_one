@@ -13,4 +13,8 @@ class Policy < ApplicationRecord
       errors.add(:base, "Vehicle already has policy")
     end
   end
+
+  scope :by_email, lambda { |email|
+    joins(:insured_person).where(insured_people: { email: email })
+  }
 end

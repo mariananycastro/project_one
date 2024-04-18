@@ -3,34 +3,50 @@
 require 'rails_helper'
 
 RSpec.describe 'Policy', type: :request do
+  let(:vehicle_attributes) do
+    {
+      brand: "New brand",
+      vehicle_model: "Gol 1.6",
+      year: 2022,
+      license_plate: 'ABC-1234'
+    }
+  end
+  let(:insured_person_attributes) do
+    {
+      name: 'Maria Silva',
+      document: '123.456.789-00',
+      email: 'maria@email.com'
+    }
+  end
+  let(:policy_response) do
+    {
+      effective_from: '2024-04-18',
+      effective_until: '2025-04-18',
+      insured_person: insured_person_attributes,
+      vehicle: vehicle_attributes
+    }.deep_stringify_keys
+  end
+  
   context '#show' do
     subject(:request) { get policy_path(id) }
-
     context 'when find policy' do
       let(:policy) do
         Policy.create!(
           effective_from: Date.today,
           effective_until: 1.year.from_now,
-          insured_person_attributes: {
-            name: 'Maria Silva',
-            document: '123.456.789-00',
-            email: 'maria@email.com'
-          },
-          vehicle_attributes: {
-            brand: "New brand",
-            vehicle_model: "Gol 1.6",
-            year: "2022",
-            license_plate: 'ABC-1234'
-          }
+          insured_person_attributes: insured_person_attributes,
+          vehicle_attributes: vehicle_attributes
         )
       end
       let(:id) { policy.id }
+
+      let(:request_response) { policy_response }
 
       it 'return success' do
         request
 
         expect(response).to have_http_status(200)
-        expect(JSON.parse(response.body)['id']).to eq policy.id
+        expect(JSON.parse(response.body)).to include(request_response)
       end
     end
 
@@ -53,21 +69,14 @@ RSpec.describe 'Policy', type: :request do
       Policy.create!(
         effective_from: Date.today,
         effective_until: 1.year.from_now,
-        insured_person_attributes: {
-          name: 'Maria Silva',
-          email: 'maria@email.com',
-          document: '123.456.789-00'
-        },
-        vehicle_attributes: {
-          brand: "New brand",
-          vehicle_model: "Gol 1.6",
-          year: "2022",
-          license_plate: 'ABC-1234'
-        }
+        insured_person_attributes: insured_person_attributes,
+        vehicle_attributes: vehicle_attributes
       )
     end
   
     context 'there are policies created' do
+      let(:request_response) { [policy_response] }
+
       it 'list policies' do
         policy
         request
@@ -75,7 +84,7 @@ RSpec.describe 'Policy', type: :request do
         response_body = JSON.parse(response.body)
 
         expect(response).to have_http_status(200)
-        expect(response_body.first['id']).to eq policy.id
+        expect(response_body).to eq request_response
       end
     end
 
@@ -98,22 +107,14 @@ RSpec.describe 'Policy', type: :request do
       Policy.create!(
         effective_from: Date.today,
         effective_until: 1.year.from_now,
-        insured_person_attributes: {
-          name: 'Maria Silva',
-          email: email,
-          document: '123.456.789-00'
-        },
-        vehicle_attributes: {
-          brand: "New brand",
-          vehicle_model: "Gol 1.6",
-          year: "2022",
-          license_plate: 'ABC-1234'
-        }
+        insured_person_attributes: insured_person_attributes,
+        vehicle_attributes: vehicle_attributes
       )
     end
 
     context 'when insured person has policy' do
       let(:email) { 'maria@email.com' }
+      let(:request_response) { [policy_response] }
 
       before { policy }
 
@@ -122,7 +123,7 @@ RSpec.describe 'Policy', type: :request do
         response_body = JSON.parse(response.body)
         
         expect(response).to have_http_status(200)
-        expect(response_body.first['id']).to eq policy.id
+        expect(response_body).to eq request_response
       end
     end
 

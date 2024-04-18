@@ -6,24 +6,19 @@ class PoliciesController < ApplicationController
   def index
     policies = Policy.all
 
-    render json: policies
+    render json: policies, each_serializer: PolicySerializer
   end
 
   def insured_person_by_email
-    policies = Policy.joins(:insured_person).where(insured_people: { email: params[:email] })
+    policies = Policy.by_email(params[:email])
 
-    render json: policies
+    render json: policies, each_serializer: PolicySerializer
   end
   
   def show
     policy = Policy.find(params[:id])
 
-    render json: policy,
-      except: [:created_at, :updated_at],
-      include: {
-        insured_person: { only: [:name, :document] },
-        vehicle: { only: [:brand, :vehicle_model, :year, :license_plate] }
-      }
+    render json: policy, serializer: PolicySerializer
   end
 
   private
