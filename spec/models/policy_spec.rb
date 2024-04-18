@@ -7,7 +7,8 @@ RSpec.describe Policy, type: :model do
     let(:insured_person_attributes) do
       {
         name: 'Maria Silva',
-        document: '123.456.789-00'
+        document: '123.456.789-00',
+        email: 'maria@email.com'
       }
     end
     let(:license_plate) { 'ABC-5678' }
@@ -86,7 +87,8 @@ RSpec.describe Policy, type: :model do
       let(:insured_person_attributes) do
         {
           name: 'Maria Silva',
-          document: '123.456.789-00'
+          document: '123.456.789-00',
+          email: 'maria@email.com'
         }
       end
       subject(:new_policy) do
@@ -120,7 +122,8 @@ RSpec.describe Policy, type: :model do
       let(:insured_person_attributes) do
         {
           name: 'Maria Silva',
-          document: '123.456.789-00'
+          document: '123.456.789-00',
+          email: 'maria@email.com'
         }
       end
       let(:vehicle_attributes) do
@@ -144,7 +147,8 @@ RSpec.describe Policy, type: :model do
       let(:another_insured_person) do
         InsuredPerson.create!(
           name: 'Another Person',
-          document: '987.654.321-00'
+          document: '987.654.321-00',
+          email: 'another_email@email.com'
         )
       end
 

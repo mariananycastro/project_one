@@ -3,15 +3,22 @@
 class PoliciesController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
+  def index
+    policies = Policy.all
+
+    render json: policies, each_serializer: PolicySerializer
+  end
+
+  def insured_person_by_email
+    policies = Policy.by_email(params[:email])
+
+    render json: policies, each_serializer: PolicySerializer
+  end
+  
   def show
     policy = Policy.find(params[:id])
 
-    render json: policy,
-      except: [:created_at, :updated_at],
-      include: {
-        insured_person: { only: [:name, :document] },
-        vehicle: { only: [:brand, :vehicle_model, :year, :license_plate] }
-      }
+    render json: policy, serializer: PolicySerializer
   end
 
   private

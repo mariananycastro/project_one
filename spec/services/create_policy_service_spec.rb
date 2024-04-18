@@ -22,7 +22,8 @@ RSpec.describe CreatePolicyService do
       let(:new_insured_person_attr) do
         {
           name: 'Maria Silva',
-          document: '123.456.789-00'
+          document: '123.456.789-00',
+          email: 'maria@email.com'
         }
       end
       let(:new_vehicle_attr) do
@@ -73,7 +74,8 @@ RSpec.describe CreatePolicyService do
       let(:old_insured_person) do
         {
           name: 'Old Name',
-          document: '000.000.000-00'
+          document: '000.000.000-00',
+          email: 'another_email@email.com'
         }
       end      
       let(:old_vehicle) do
@@ -157,7 +159,8 @@ RSpec.describe CreatePolicyService do
         let(:new_insured_person_attr) do
           {
             name: 'Maria Silva',
-            document: '123.456.789-00'
+            document: '123.456.789-00',
+            email: 'maria@email.com'
           }
         end
 
