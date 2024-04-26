@@ -7,7 +7,7 @@ Rails.application.configure do
     IPAddr.new("::/0"),             # All IPv6 addresses.
     "localhost",                    # The localhost reserved domain.
     ENV["RAILS_DEVELOPMENT_HOSTS"],  # Additional comma-separated hosts for development.
-    "app:3000"
+    "app:5000"
   ]
 
   # In the development environment your application's code is reloaded any time

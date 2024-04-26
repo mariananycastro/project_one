@@ -17,7 +17,7 @@ stop: # make stop container=rabbitmq
 server:
 	docker compose up -d
 	docker exec -it app /bin/sh -c "bin/setup \
-		&& bundle exec rails server --binding 0.0.0.0 -p 3000"
+		&& bundle exec rails server --binding 0.0.0.0 -p 5000"
 
 sneakers:
 	docker logs --follow sneakers
