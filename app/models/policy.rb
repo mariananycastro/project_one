@@ -1,6 +1,9 @@
 class Policy < ApplicationRecord
   belongs_to :insured_person
   belongs_to :vehicle
+  has_one :payment
+
+  enum status: { draft: 0, active: 1, expired: 2, canceled: 3, pending: 4 }
 
   accepts_nested_attributes_for :insured_person, :vehicle
 
