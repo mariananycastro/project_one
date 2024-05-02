@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_17_153752) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_30_204406) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -23,6 +23,17 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_17_153752) do
     t.index ["document"], name: "index_insured_people_on_document", unique: true
   end
 
+  create_table "payments", force: :cascade do |t|
+    t.string "external_id"
+    t.string "link"
+    t.integer "status", default: 0
+    t.decimal "price"
+    t.bigint "policy_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["policy_id"], name: "index_payments_on_policy_id"
+  end
+
   create_table "policies", force: :cascade do |t|
     t.date "effective_from"
     t.date "effective_until"
@@ -30,6 +41,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_17_153752) do
     t.datetime "updated_at", null: false
     t.bigint "insured_person_id", null: false
     t.bigint "vehicle_id", null: false
+    t.integer "status", default: 0
     t.index ["insured_person_id"], name: "index_policies_on_insured_person_id"
     t.index ["vehicle_id"], name: "index_policies_on_vehicle_id"
   end
@@ -44,6 +56,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_17_153752) do
     t.index ["license_plate"], name: "index_vehicles_on_license_plate", unique: true
   end
 
+  add_foreign_key "payments", "policies"
   add_foreign_key "policies", "insured_people"
   add_foreign_key "policies", "vehicles"
 end

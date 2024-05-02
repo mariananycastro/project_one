@@ -23,17 +23,18 @@ RSpec.describe 'Policy', type: :request do
       effective_from: '2024-04-18',
       effective_until: '2025-04-18',
       insured_person: insured_person_attributes,
-      vehicle: vehicle_attributes
+      vehicle: vehicle_attributes,
+      payment: nil
     }.deep_stringify_keys
   end
-  
+
   context '#show' do
     subject(:request) { get policy_path(id) }
     context 'when find policy' do
       let(:policy) do
         Policy.create!(
-          effective_from: Date.today,
-          effective_until: 1.year.from_now,
+          effective_from: '2024-04-18',
+          effective_until: '2025-04-18',
           insured_person_attributes: insured_person_attributes,
           vehicle_attributes: vehicle_attributes
         )
@@ -60,6 +61,41 @@ RSpec.describe 'Policy', type: :request do
         expect(response.body).to eq ''
       end
     end
+
+    context 'when policy has payment' do
+      let(:payment_attributes) do
+        {
+          external_id: 'external_id',
+          link: 'link_to_payment',
+          status: 'pending',
+          price: '1000.0',
+          policy_id: policy.id
+        }
+      end
+      let(:payment) { Payment.create!(payment_attributes) }
+      let(:policy) do
+        Policy.create!(
+          effective_from: '2024-04-18',
+          effective_until: '2025-04-18',
+          insured_person_attributes: insured_person_attributes,
+          vehicle_attributes: vehicle_attributes
+        )
+      end
+      let(:id) { policy.id }
+
+      before do
+        policy
+        payment
+      end
+
+      it 'return success with payment' do
+        request
+        response_payment = JSON.parse(response.body)['payment']
+
+        expect(response).to have_http_status(200)
+        expect(response_payment).to include(payment_attributes.except(:policy_id).stringify_keys)
+      end
+    end
   end
 
   context '#index' do
@@ -67,13 +103,13 @@ RSpec.describe 'Policy', type: :request do
 
     let(:policy) do
       Policy.create!(
-        effective_from: Date.today,
-        effective_until: 1.year.from_now,
+        effective_from: '2024-04-18',
+        effective_until: '2025-04-18',
         insured_person_attributes: insured_person_attributes,
         vehicle_attributes: vehicle_attributes
       )
     end
-  
+
     context 'there are policies created' do
       let(:request_response) { [policy_response] }
 
@@ -105,8 +141,8 @@ RSpec.describe 'Policy', type: :request do
 
     let(:policy) do
       Policy.create!(
-        effective_from: Date.today,
-        effective_until: 1.year.from_now,
+        effective_from: '2024-04-18',
+        effective_until: '2025-04-18',
         insured_person_attributes: insured_person_attributes,
         vehicle_attributes: vehicle_attributes
       )
@@ -121,7 +157,7 @@ RSpec.describe 'Policy', type: :request do
       it 'return policies from given email' do
         request
         response_body = JSON.parse(response.body)
-        
+
         expect(response).to have_http_status(200)
         expect(response_body).to eq request_response
       end
@@ -138,5 +174,5 @@ RSpec.describe 'Policy', type: :request do
         expect(response_body).to eq []
       end
     end
-  end  
+  end
 end

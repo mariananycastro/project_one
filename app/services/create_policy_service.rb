@@ -28,10 +28,15 @@ class CreatePolicyService
           vehicle_id: vehicle.id
         )
       )
-      
+
       raise ActiveRecord::Rollback unless policy.save
+      raise ActiveRecord::Rollback unless create_payment(policy.id)
 
       policy
     end
+  end
+
+  def create_payment(policy_id)
+    Stripe::OneTimeChargeService.create_checkout(policy_id)
   end
 end
