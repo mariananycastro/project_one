@@ -6,7 +6,7 @@ module Stripe
       @policy_id = policy_id
       @product_name = product_name || 'Generic policy'
       @value = value || 1000
-      @success_url = success_url || 'https://www.youtube.com/'
+      @success_url = success_url || "#{ENV['APPWEB']}success_payment"
     end
 
     def self.create_checkout(policy_id, **kwargs)
