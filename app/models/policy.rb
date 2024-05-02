@@ -12,7 +12,10 @@ class Policy < ApplicationRecord
   validate :vehicle_policy_uniquess
 
   def vehicle_policy_uniquess
-    if vehicle && Policy.joins(:vehicle).where(vehicles:{license_plate: vehicle.license_plate}).exists?
+    if vehicle && Policy.joins(:vehicle)
+                        .where(vehicles:{license_plate: vehicle.license_plate})
+                        .where.not(id: self.id)
+                        .exists?
       errors.add(:base, "Vehicle already has policy")
     end
   end
