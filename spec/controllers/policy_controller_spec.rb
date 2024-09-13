@@ -24,7 +24,8 @@ RSpec.describe 'Policy', type: :request do
       effective_until: '2025-04-18',
       insured_person: insured_person_attributes,
       vehicle: vehicle_attributes,
-      payment: nil
+      payment: nil,
+      status:'draft'
     }.deep_stringify_keys
   end
 
