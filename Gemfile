@@ -16,6 +16,8 @@ gem "bootsnap", require: false
 gem 'active_model_serializers'
 gem 'stripe'
 gem 'dotenv', require: 'dotenv/load'
+gem 'faye-websocket'
+gem 'jwt'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
