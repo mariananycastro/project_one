@@ -63,13 +63,30 @@ RSpec.describe UpdatePaymentService do
             .to change { payment.reload.status }.from('pending').to('paid')
             .and change { payment.policy.reload.status }.from('draft').to('active')
         end
+
+        it 'calls WebsocketConnectionService' do
+          messagem = {
+            email: policy.insured_person.email,
+            license_plate: policy.vehicle.license_plate,
+            payment_status: 'paid',
+            policy_status: 'active'
+          }
+
+          expect(WebsocketConnectionService)
+            .to receive(:broadcast)
+            .with(ENV['SINATRA_BROADCAST_URL'], messagem)
+
+          subject
+        end
       end
 
       context 'when does NOT find payment' do
         let(:id) { 'another_id' }
 
         it 'raise InvalidPaymentUpdateError' do
-          expect{ subject }
+          expect(WebsocketConnectionService).not_to receive(:broadcast)
+
+          expect { subject }
             .to raise_error(
               UpdatePaymentService::InvalidPaymentUpdateError,
               "Error to update payment #{ id }")
@@ -77,7 +94,7 @@ RSpec.describe UpdatePaymentService do
       end
     end
 
-    context ' payment expired' do
+    context 'payment expired' do
       let(:payment_status) { 'unpaid' }
       let(:status) { 'expired' }
 
@@ -91,12 +108,27 @@ RSpec.describe UpdatePaymentService do
               .and change { payment.policy.reload.status }.from('draft').to('canceled')
           end
         end
+
+        it 'calls WebsocketConnectionService' do
+          messagem = {
+            email: policy.insured_person.email,
+            license_plate: policy.vehicle.license_plate,
+            payment_status: 'expired',
+            policy_status: 'canceled'
+          }
+
+          expect(WebsocketConnectionService).to receive(:broadcast).with(ENV['SINATRA_BROADCAST_URL'], messagem)
+
+          subject
+        end
       end
 
       context 'when does NOT find payment' do
         let(:id) { 'another_id' }
 
         it 'raise InvalidPaymentUpdateError' do
+          expect(WebsocketConnectionService).not_to receive(:broadcast)
+
           expect{ subject }
             .to raise_error(
               UpdatePaymentService::InvalidPaymentUpdateError,
