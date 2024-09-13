@@ -7,7 +7,7 @@ This project will help me study:
 - RabbitMQ
 
 ## Main Object
-In this project we will create a routes to get the policy which will be used by project_two with Graphql 
+In this project we will create a routes to get the policy which will be used by project_two with Graphql
 add route
 
 There will be a (worker)[path] which will create a new policy.

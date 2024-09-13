@@ -30,7 +30,7 @@ services:
     networks:
       - initiatives
   sneakers:
-    <<: *app  
+    <<: *app
     container_name: sneakers
     command: ['rake', 'sneakers:run']
     ports:
@@ -40,7 +40,7 @@ services:
 volumes:
   rubygems:
   project-one-data:
-  
+
 networks:
   initiatives:
     external: true
