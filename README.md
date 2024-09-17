@@ -5,6 +5,8 @@ This project will help me study:
 - Docker
 - PostgreSQL
 - RabbitMQ
+- Faye-websocket
+- JWT
 
 ## Main Object
 In this project we will create a routes to get the policy which will be used by project_two with Graphql
@@ -67,4 +69,11 @@ https://github.com/jondot/sneakers
 https://github.com/jondot/sneakers/wiki
 
 ## Setup
-TODO
+### Env file
+To run this application properly, you will need to set the .env variables.
+Copy the env.example file and set all variables.
+
+To generate the JWT token you will need to set the JWT_SECRET, it needs to be the same token of Project_three JWT_SECRET_WEBSOCKET, which will access Websocket's route to send a message.
+
+To test it locally you will need to change Stripe variables from your personal account from Stripe.
+
