@@ -14,7 +14,7 @@ class PoliciesController < ApplicationController
 
     render json: policies, each_serializer: PolicySerializer
   end
-  
+
   def show
     policy = Policy.find(params[:id])
 
